@@ -47,127 +47,50 @@ Dashboard de Revenue Management para Hotelería desarrollado en Excel, diseñado
   <summary>Click para expandir medidas</summary>
 
     
-  - **#Total Projects:** `DISTINCTCOUNT(FactProgress[ID_Project])`
-  - **#Budget:** `SUM(DimProject[Budget])`
-  - **#Actual Cost:** `SUM(FactProgress[Real_Cost])`
-  - **#Planned Cost:** `SUM(FactProgress[Expected_Cost])`
-  - **#At-Risk Projects:**
+  - **#Actual Revenue:** `=CALCULATE(SUM([Revenue]),FactTransaction[Base]="Actual")`
+  - **#LY Rev:**
     ```dax
-    VAR _count = COUNTROWS(FILTER(DimProject,[_Alert Progress]="Critical" || [_Alert Progress]="Behind Schedule")) 
-    RETURN IF(OR(ISBLANK(_count),_count=0),0,_count)
+    =SUMX(
+    VALUES('DimCalendar'[Date]),
+    CALCULATE(
+        [#Actual Revenue],
+        DATEADD('DimCalendar'[Date], -1, YEAR)
+    ))
     ```
-  - **#Cost Progress(%):** `DIVIDE([#Actual Cost],[#Planned Cost],0)`
-  - **#Planned Progress(%):** `MIN(1,DIVIDE([#PlanToday],[#Planned Days],0))`
-  - **#PlanToday:** `SUM(FactProgress[Plan Today])`
-  - **#Planned Days:** `DATEDIFF(MIN([Planned_StartDate]),MAX([Planned_EndDate]),DAY)+1`
-  - **#Real Progress(%):** 
+  - **#Budget Revenue:** `=CALCULATE(SUM(FactTransaction[Revenue]),FactTransaction[Base]="Budget")`
+  - **#Actual RNS:** `=CALCULATE(SUM(FactTransaction[RNS]),FactTransaction[Base]="Actual")`
+  - **#LY RNS:**
     ```dax
-    VAR _progress = DIVIDE([#Real Today],[#Real Days],0) 
-    VAR result = IF(_progress>1,1,_progress) 
-    RETURN result
+    =SUMX(
+    VALUES('DimCalendar'[Date]),
+    CALCULATE(
+        [#Actual RNS],
+        DATEADD('DimCalendar'[Date], -1, YEAR)
+    ))
     ```
-  - **#Real Today:** `SUMX(FactProgress,[Real Today])`
-  - **#Real Days:** `SUM([Real Days])`
-  - **#BudgetvsActual:** `DIVIDE([#Actual Cost],[#Budget],0)`
-  - **Alert Progress:**
+  - **#Budget RNS:** `=CALCULATE(SUM(FactTransaction[RNS]),FactTransaction[Base]="Budget")`
+  - **#Actual ADR:** `=DIVIDE([#Actual Revenue],[#Actual RNS],0)`
+  - **#LY ADR:** `=DIVIDE([#LY Rev],[#LY RNS],0)`
+  - **#Budget ADR:** `=DIVIDE([#Budget Revenue],[#Budget RNS],0)`
+  - **#Actual Availability:** `=SUM(FactAvailability[Availability])`
+  - **#LY Availability:**
     ```dax
-    VAR dateendplanned = MAX(FactProgress[Planned_EndDate])
-    VAR dateendreal = COUNTBLANK(FactProgress[Real_EndDate])
-    VAR realprogress = [#Real Progress(%)]
-    VAR plannedprogress = [#Planned Progress(%)]
-    VAR result = SWITCH(TRUE(),realprogress=1,"Complete",AND(dateendreal>0,dateendplanned<TODAY()),"Critical",realprogress<plannedprogress-0.1,"Behind schedule","On schedule")
-    RETURN result
+    =SUMX(
+    VALUES('DimCalendar'[Date]),
+    CALCULATE(
+        [#Actual Availability],
+        DATEADD('DimCalendar'[Date], -1, YEAR)
+    ))
     ```
-  - **Alert Cost:**
-    ```dax
-    SWITCH(TRUE(),[#Cost Progress(%)]>1.1,"Critical Cost Overrun",[#Cost Progress(%)]>1,"Moderate cost overrun", [#Cost Progress(%)]>0.94,"On budget",[#Cost Progress(%)]>0,"Cost Efficiency","Unexpended budget")
-    ```
-  - **_CPI:**
-    ```dax
-    VAR _progress = SWITCH(TRUE(),([#Actual Cost]>0) && ([#Real Progress(%)]>0),(([#Real Progress(%)]*[#Planned Cost])/[#Actual Cost]),0)
-    VAR result = SWITCH(TRUE(),_progress=0,"Unexpended budget",_progress>=1.05,"Excellent",_progress>1,"Good",_progress>0.9,"Warning",_progress>0,"Critical")
-    RETURN result
-    ```
-  - **PM:**
-    ```dax
-    IF(HASONEVALUE(DimProject[Name_Project]),MAXX(FactProgress,RELATED(DimProjectManagement[PM_Name])),"PM")
-    ```
-  - **KPI Alert Cost:**
-    ```dax
-    SWITCH(TRUE(),[_Alert Cost]="Critical Cost Overrun" || [_Alert Cost]="Moderate cost overrun",1, [_Alert Cost]="On Budget",0.7,[_Alert Cost] = "Cost Efficiency",0.5,0)
-    ```
-  - **KPI CPI:**
-    ```dax
-    SWITCH(TRUE(),[_CPI]="Unexpended Budget",1,[_CPI]="Excellent",0.9,[_CPI]="Good",0.75,[_CPI]="Warning",0.5,[_CPI]="Critical",0.1)
-    ```
-  - **KPI Progress:**
-    ```dax
-    SWITCH(TRUE(),[_Alert Progress]="Complete",1,[_Alert Progress]="Behind Schedule",0.9,[_Alert Progress]="On Schedule",0.5,[_Alert Progress]="Critical",0.1)
-    ```
-  - **#Total Items:**
-    ```dax
-    DISTINCTCOUNT(FactProgress[ID_Item])
-    ```
-  - **#Temporary Works Progress:**
-    ```dax
-    CALCULATE([#Real Progress(%)],DimItems[Phase]="1. Obras Provisionales")
-    ```
-  - **#Structural Works Progress:**
-    ```dax
-    CALCULATE([#Real Progress(%)],DimItems[Phase]="2. Estructuras")
-    ```
-  - **#MEP Progress:**
-    ```dax
-    CALCULATE([#Real Progress(%)],DimItems[Phase]="3. Instalaciones")
-    ```
-  - **#Finishes Progress:**
-    ```dax
-    CALCULATE([#Real Progress(%)],DimItems[Phase]="4. Acabados")
-    ```
-  - **#Critical Items:**
-    ```dax
-    VAR CriticalItems = COUNTROWS(FILTER(FactProgress,[Alert Progress]="Crítico"))
-    RETURN IF(OR(ISBLANK(CriticalItems),CriticalItems=0),0,CriticalItems)
-    ```
-  - **#CPI:**
-    ```dax
-    IF(AND([#Planned Cost]>0,[#Actual Cost]>0),DIVIDE(([#Planned Cost]*[#Real Progress(%)]),[#Actual Cost],0),BLANK())
-    ```
-  - **#CV:**
-    ```dax
-    VAR cv = DIVIDE([#Actual Cost],[#Planned Cost],0)-1
-    RETURN IF(cv=-1,0,cv)
-    ```
-  - **#Planned_DateMin:**
-    ```dax
-    VAR _date = MIN(FactProgress[Planned_StartDate])
-    RETURN IF(HASONEVALUE(DimProject[Name_Project]),_date,"Select a project")
-    ```
-  - **#Planned_DateMax:**
-    ```dax
-    VAR _date= MAX(FactProgress[Planned_EndDate])
-    RETURN IF(HASONEVALUE(DimProject[Name_Project]),_date,"Select a project")
-    ```
-  - **#Total Days Overdue:**
-    ```dax
-    VAR days = [#Real Days]-[#Planned Days]
-    VAR validate = IF(days<0,0,days)
-    RETURN IF(HASONEVALUE(DimProject[Name_Project]),validate,"Select a project")
-    ```
-  - **#Actual_DateMin:**
-    ```dax
-    VAR _date= MIN(FactProgress[Real_StartDate])
-    RETURN IF(HASONEVALUE(DimProject[Name_Project]),_date,"Select a project")
-    ```
-  - **#Actual_DateMax:**
-    ```dax
-    VAR _date= MAX(FactProgress[Real_EndDate])
-    RETURN IF(HASONEVALUE(DimProject[Name_Project]),_date,"Select a project")
-    ```
-  - **_Owner:**
-    ```dax
-    =IF(HASONEVALUE(DimProject[Name_Project]),MAXX(FactProgress,RELATED(DimOwner[Owner_Name])),"Owner")
-    ```
+  - **#Actual Occupancy(%):** `=DIVIDE([#Actual RNS],[#Actual Availability],0)`
+  - **#LY Occupancy(%):** `=DIVIDE([#LY RNS],[#LY Availability],0)`
+  - **#Budget Occupancy(%):** `=DIVIDE([#Budget RNS],[#Actual Availability],0)`
+  - **#Actual Revpar:** `=[#Actual ADR]*[#Actual Occupancy(%)]`
+  - **#LY Revpar:** `=[#LY ADR]*[#LY Occupancy(%)]`
+  - **#Budget Revpar:** `=[#Budget ADR]*[#Budget Occupancy(%)]`
+  - **#Budget Revenue YTD:** `=CALCULATE([#Budget Revenue],DATESYTD(DimCalendar[Date]))`
+  - **#Actual Revenue YTD:** `=CALCULATE([#Actual Revenue],DATESYTD(DimCalendar[Date]))`
+  
   </details>
 - Diseño Interactivo: Uso de paginado para navegación y segmentación de datos.
 
