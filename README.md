@@ -97,9 +97,9 @@ Dashboard de Revenue Management para Hotelería desarrollado en Excel, diseñado
 ## 🖼️ Vistas Previas del proyecto
 <details>
   <summary>Capturas</summary>
-    <img width="1702" height="808" alt="image" src="https://github.com/user-attachments/assets/eabacd09-8f1b-4dd4-a200-187b21fe0135" />
-    <img width="1612" height="882" alt="image" src="https://github.com/user-attachments/assets/a6c5243e-b246-4340-a703-7bb0769cf6fa" />
-    <img width="2159" height="874" alt="image" src="https://github.com/user-attachments/assets/3c2b3ddf-2796-4844-8dc2-9837eed6e9fd" />
+    <img width="2101" height="808" alt="image" src="https://github.com/user-attachments/assets/d43168e3-cb4e-4ade-ae5b-6113861f1310" />
+    <img width="1512" height="979" alt="image" src="https://github.com/user-attachments/assets/7160fe37-7260-4b29-955d-6bf7435357b7" />
+    <img width="1824" height="971" alt="image" src="https://github.com/user-attachments/assets/e70a39e8-cdfe-4629-a9b8-7d966ca106de" />
 </details>
 
 <details>
