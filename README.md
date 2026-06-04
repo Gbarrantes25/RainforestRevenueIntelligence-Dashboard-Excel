@@ -1,4 +1,4 @@
-# Construction Project Dashboard
+# Rainforest Revenue Intelligence Dashboard
 
 ## 📃 Descripción General
 Dashboard profesional para el **seguimiento y control de proyectos de construcción**, desarrollado en **Microsoft Excel** con **Power Query** y **DAX**. 
