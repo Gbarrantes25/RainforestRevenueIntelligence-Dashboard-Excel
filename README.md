@@ -1,23 +1,21 @@
 # Rainforest Revenue Intelligence Dashboard
 
 ## 📃 Descripción General
-Dashboard profesional para el **seguimiento y control de proyectos de construcción**, desarrollado en **Microsoft Excel** con **Power Query** y **DAX**. 
-Permite a gerentes de obra y stakeholders:
-- 📊 Visualizar el progreso real vs. planificado en tiempo real.
-- 💰 Monitorear desviaciones de presupuesto y cronograma.
-- 🚨 Identificar proyectos en riesgo mediante alertas automáticas.
-- 📈 Analizar KPIs clave como CPI, avance por fase y costos.
+Dashboard de Revenue Management para Hotelería desarrollado en Excel, diseñado para analizar y optimizar el rendimiento de ingresos de una cadena hotelera nacional en la selva. Este proyecto transforma datos de reservaciones en métricas estratégicas del sector hotelero mediante:
+
+
+- 📊 2 Vistas Analíticas: Overview (vista general) y Deep Dive (Actual vs Budget vs LY).
+- 🏨 KPIs Hoteleros: +10 medidas DAX especializadas (RevPAR, ADR, Occupancy %).
+- 🎯 Análisis de Ingresos: Revenue y Metas.
+- 🖱️ Navegación Interactiva: Segmentación por sucursal y período de tiempo.
 
 
 ## 📊 Contenido del proyecto
-- Hoja "DimProject": Contiene la tabla dimensional de Proyectos.
-- Hoja "DimItems": Contiene la tabla dimensional de items.
-- Hoja "FactProgress": Contiene la tabla de hechos de Progreso de proyectos.
-- Hoja "DimPM": Contiene la tabla dimensional de Project Management.
-- Hoja "DimOwner": Contiene la tabla dimensional de los responsables por items.
-- Hoja "Overview": Contiene la primera hoja del Dashboard.
-- Hoja "Phase & Line": Contiene la segunda hoja del Dashboard.
-- Hoja "Gantt View": Contiene la última hoja del Dashboard.
+- Hoja "Home": Contiene la presentación del proyecto.
+- Hoja "FactAvailability": Contiene la tabla de disponibilidad de habitaciones.
+- Hoja "FactTransaction": Contiene la tabla de ingresos y metas.
+- Hoja "Overview": Contiene la vista general del dashboard.
+- Hoja "Deep Dive": Contiene la comparación de ingresos, metas y LY.
 - Hoja "Settings": Contiene los datos de la interactividad del Dashboard.
 
 
@@ -171,7 +169,7 @@ Permite a gerentes de obra y stakeholders:
     =IF(HASONEVALUE(DimProject[Name_Project]),MAXX(FactProgress,RELATED(DimOwner[Owner_Name])),"Owner")
     ```
   </details>
-- Diseño Interactivo: Uso de paginado, controles de formulario y segmentación de datos.
+- Diseño Interactivo: Uso de paginado para navegación y segmentación de datos.
 
 ## 🖼️ Vistas Previas del proyecto
 <details>
