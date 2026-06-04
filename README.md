@@ -28,14 +28,14 @@ Dashboard de Revenue Management para Hotelería desarrollado en Excel, diseñado
 ## ⚙️ Configuración del Entorno
 - Software Necesario: Microsoft Excel.
 - Instalación:
-  - Descargar [Construction Project Dashboard.xlsx](https://github.com/Gbarrantes25/ConstructionProject-Dashboard-Excel/blob/main/Construction%20Project%20Dashboard.xlsx) con Microsoft Excel.
+  - Descargar [Rainforest Hotel Dashboard.xlsx](https://github.com/Gbarrantes25/RainforestRevenueIntelligence-Dashboard-Excel/blob/main/Rainforest%20Hotel%20Dashboard.xlsx) con Microsoft Excel.
   - Entrar a Inicio y darle click a "Actualizar".
 
 
 ## 📂 Estructura del Repositorio
 <code>.
-  ├── Construction Project Dashboard.xlsx  # Contiene el archivo del proyecto en formato .xlsx            
-  └── README.md                            # Este archivo.
+  ├── Rainforest Hotel Dashboard.xlsx  # Contiene el archivo del proyecto en formato .xlsx            
+  └── README.md                        # Este archivo.
 </code>
 
 
