@@ -104,7 +104,7 @@ Dashboard de Revenue Management para Hotelería desarrollado en Excel, diseñado
 
 <details>
   <summary>Video</summary>
-  https://youtu.be/UGYFBVz-8AA?si=TrvGqWUrrEhUjzlv
+  https://youtu.be/3ah8CH0h_vA
 </details>
 
 
